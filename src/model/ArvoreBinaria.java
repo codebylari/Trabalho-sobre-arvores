@@ -2,119 +2,119 @@ package src.model;
 
 import java.util.*;
 
-// Classe genérica de árvore binária, que funciona para qualquer tipo T que implemente Comparable
+/**
+ * Implementação de uma Árvore Binária de Busca (BST) genérica.
+ * Usa recursividade onde apropriado e provê:
+ * inserir, buscar, remover, pré/em/pós-ordem, altura, profundidade,
+ * caminho da raiz até um nó, caminho entre dois nós e LCA (ancestral comum).
+ */
 public class ArvoreBinaria<T extends Comparable<T>> {
-    private No<T> raiz; // Nó raiz da árvore
+    private No<T> raiz;
 
-    // ===== INSERÇÃO =====
-    // Método público para inserir um valor na árvore
+    // -------- Inserção --------
     public void inserir(T valor) {
         raiz = inserirRec(raiz, valor);
     }
 
-    // Inserção recursiva: se nó atual for null, cria novo nó; caso contrário, decide ir para esquerda ou direita
     private No<T> inserirRec(No<T> atual, T valor) {
+        if (valor == null) return atual;
         if (atual == null) return new No<>(valor);
-        if (valor.compareTo(atual.valor) < 0)
-            atual.esquerdo = inserirRec(atual.esquerdo, valor);
-        else if (valor.compareTo(atual.valor) > 0)
-            atual.direito = inserirRec(atual.direito, valor);
-        return atual; // Retorna o nó atualizado
+        int cmp = valor.compareTo(atual.valor);
+        if (cmp < 0) atual.esquerdo = inserirRec(atual.esquerdo, valor);
+        else if (cmp > 0) atual.direito = inserirRec(atual.direito, valor);
+        // se igual => não insere (evita duplicados por chave comparável)
+        return atual;
     }
 
-    // ===== BUSCA =====
-    // Verifica se um valor está presente na árvore
+    // -------- Busca --------
     public boolean buscar(T valor) {
         return buscarRec(raiz, valor) != null;
     }
 
-    // Busca recursiva: se nó atual for null ou valor encontrado, retorna nó; senão, continua à esquerda ou direita
     private No<T> buscarRec(No<T> atual, T valor) {
-        if (atual == null || atual.valor.equals(valor)) return atual;
-        if (valor.compareTo(atual.valor) < 0)
-            return buscarRec(atual.esquerdo, valor);
-        else
-            return buscarRec(atual.direito, valor);
+        if (atual == null || valor == null) return null;
+        int cmp = valor.compareTo(atual.valor);
+        if (cmp == 0) return atual;
+        if (cmp < 0) return buscarRec(atual.esquerdo, valor);
+        else return buscarRec(atual.direito, valor);
     }
 
-    // ===== REMOÇÃO =====
-    // Remove um valor da árvore
+    // -------- Remoção --------
     public void remover(T valor) {
         raiz = removerRec(raiz, valor);
     }
 
-    // Remoção recursiva
     private No<T> removerRec(No<T> atual, T valor) {
-        if (atual == null) return null;
-
-        if (valor.compareTo(atual.valor) < 0)
-            atual.esquerdo = removerRec(atual.esquerdo, valor);
-        else if (valor.compareTo(atual.valor) > 0)
-            atual.direito = removerRec(atual.direito, valor);
-        else { // Encontrou o nó a remover
-            if (atual.esquerdo == null) return atual.direito; // Nó com zero ou um filho à direita
-            else if (atual.direito == null) return atual.esquerdo; // Nó com um filho à esquerda
-            // Nó com dois filhos: substitui pelo menor valor da subárvore direita
-            atual.valor = encontrarMenorValor(atual.direito);
-            atual.direito = removerRec(atual.direito, atual.valor);
+        if (atual == null || valor == null) return atual;
+        int cmp = valor.compareTo(atual.valor);
+        if (cmp < 0) atual.esquerdo = removerRec(atual.esquerdo, valor);
+        else if (cmp > 0) atual.direito = removerRec(atual.direito, valor);
+        else {
+            // Nó encontrado
+            if (atual.esquerdo == null) return atual.direito;
+            else if (atual.direito == null) return atual.esquerdo;
+            // Dois filhos: substituir pelo menor da subárvore direita
+            T menor = encontrarMenorValor(atual.direito);
+            atual.valor = menor;
+            atual.direito = removerRec(atual.direito, menor);
         }
         return atual;
     }
 
-    // Encontra o menor valor de uma subárvore (nó mais à esquerda)
     private T encontrarMenorValor(No<T> no) {
-        while (no.esquerdo != null) no = no.esquerdo;
-        return no.valor;
+        No<T> atual = no;
+        while (atual.esquerdo != null) atual = atual.esquerdo;
+        return atual.valor;
     }
 
-    // ===== PERCURSOS =====
-    // Retorna lista de valores em pré-ordem
+    // -------- Percursos --------
     public List<T> preOrdem() {
-        List<T> resultado = new ArrayList<>();
-        preOrdemRec(raiz, resultado);
-        return resultado;
+        List<T> res = new ArrayList<>();
+        preOrdemRec(raiz, res);
+        return res;
     }
 
-    private void preOrdemRec(No<T> no, List<T> resultado) {
+    private void preOrdemRec(No<T> no, List<T> res) {
         if (no != null) {
-            resultado.add(no.valor);
-            preOrdemRec(no.esquerdo, resultado);
-            preOrdemRec(no.direito, resultado);
+            res.add(no.valor);
+            preOrdemRec(no.esquerdo, res);
+            preOrdemRec(no.direito, res);
         }
     }
 
-    // Retorna lista de valores em ordem (in-order)
     public List<T> emOrdem() {
-        List<T> resultado = new ArrayList<>();
-        emOrdemRec(raiz, resultado);
-        return resultado;
+        List<T> res = new ArrayList<>();
+        emOrdemRec(raiz, res);
+        return res;
     }
 
-    private void emOrdemRec(No<T> no, List<T> resultado) {
+    private void emOrdemRec(No<T> no, List<T> res) {
         if (no != null) {
-            emOrdemRec(no.esquerdo, resultado);
-            resultado.add(no.valor);
-            emOrdemRec(no.direito, resultado);
+            emOrdemRec(no.esquerdo, res);
+            res.add(no.valor);
+            emOrdemRec(no.direito, res);
         }
     }
 
-    // Retorna lista de valores em pós-ordem
     public List<T> posOrdem() {
-        List<T> resultado = new ArrayList<>();
-        posOrdemRec(raiz, resultado);
-        return resultado;
+        List<T> res = new ArrayList<>();
+        posOrdemRec(raiz, res);
+        return res;
     }
 
-    private void posOrdemRec(No<T> no, List<T> resultado) {
+    private void posOrdemRec(No<T> no, List<T> res) {
         if (no != null) {
-            posOrdemRec(no.esquerdo, resultado);
-            posOrdemRec(no.direito, resultado);
-            resultado.add(no.valor);
+            posOrdemRec(no.esquerdo, res);
+            posOrdemRec(no.direito, res);
+            res.add(no.valor);
         }
     }
 
-    // ===== ALTURA =====
-    // Retorna a altura da árvore (nível do nó mais profundo)
+    // -------- Altura --------
+    /**
+     * Retorna a altura da árvore.
+     * Convenção: altura de árvore vazia = -1 (pode ajustar para 0 se preferir).
+     */
     public int altura() {
         return alturaRec(raiz);
     }
@@ -124,77 +124,103 @@ public class ArvoreBinaria<T extends Comparable<T>> {
         return 1 + Math.max(alturaRec(no.esquerdo), alturaRec(no.direito));
     }
 
-    // ===== PROFUNDIDADE DE UM NÓ =====
-    // Retorna a profundidade de um valor específico (distância da raiz)
+    // -------- Profundidade (distância da raiz) --------
     public int profundidade(T valor) {
         return profundidadeRec(raiz, valor, 0);
     }
 
     private int profundidadeRec(No<T> no, T valor, int nivel) {
-        if (no == null) return -1;
-        if (no.valor.equals(valor)) return nivel;
-        int esquerda = profundidadeRec(no.esquerdo, valor, nivel + 1);
-        if (esquerda != -1) return esquerda;
-        return profundidadeRec(no.direito, valor, nivel + 1);
+        if (no == null || valor == null) return -1;
+        int cmp = valor.compareTo(no.valor);
+        if (cmp == 0) return nivel;
+        if (cmp < 0) return profundidadeRec(no.esquerdo, valor, nivel + 1);
+        else return profundidadeRec(no.direito, valor, nivel + 1);
     }
 
-    // ===== CAMINHO DA RAIZ ATÉ UM NÓ =====
+    // -------- Caminho da raiz até um nó --------
     public List<T> caminhoAte(T valor) {
         List<T> caminho = new ArrayList<>();
-        if (encontrarCaminho(raiz, valor, caminho))
-            return caminho;
-        return Collections.emptyList(); // Retorna lista vazia se valor não encontrado
+        if (valor == null) return Collections.emptyList();
+        No<T> atual = raiz;
+        while (atual != null) {
+            caminho.add(atual.valor);
+            int cmp = valor.compareTo(atual.valor);
+            if (cmp == 0) return caminho;
+            if (cmp < 0) atual = atual.esquerdo;
+            else atual = atual.direito;
+        }
+        return Collections.emptyList(); // não encontrado
     }
 
-    private boolean encontrarCaminho(No<T> no, T valor, List<T> caminho) {
-        if (no == null) return false;
-        caminho.add(no.valor);
-        if (no.valor.equals(valor)) return true;
-        if (encontrarCaminho(no.esquerdo, valor, caminho) || encontrarCaminho(no.direito, valor, caminho))
-            return true;
-        caminho.remove(caminho.size() - 1); // Remove último elemento se caminho incorreto
-        return false;
-    }
+    // -------- Caminho entre dois nós --------
+    public List<T> caminhoEntre(T v1, T v2) {
+        if (v1 == null || v2 == null) return Collections.emptyList();
+        // Encontre LCA e então caminho
+        No<T> lca = encontrarLCA(raiz, v1, v2);
+        if (lca == null) return Collections.emptyList();
 
-    // ===== CAMINHO ENTRE DOIS NÓS =====
-    public List<T> caminhoEntre(T valor1, T valor2) {
-        List<T> caminho1 = caminhoAte(valor1);
-        List<T> caminho2 = caminhoAte(valor2);
+        // caminho da LCA até v1 (inclusivo)
+        List<T> caminho1 = new ArrayList<>();
+        No<T> atual = lca;
+        while (atual != null) {
+            caminho1.add(atual.valor);
+            int cmp = v1.compareTo(atual.valor);
+            if (cmp == 0) break;
+            if (cmp < 0) atual = atual.esquerdo;
+            else atual = atual.direito;
+        }
+        if (caminho1.isEmpty() || !caminho1.get(caminho1.size()-1).equals(v1)) return Collections.emptyList();
 
-        if (caminho1.isEmpty() || caminho2.isEmpty()) return Collections.emptyList();
+        // caminho da LCA até v2 (inclusivo)
+        List<T> caminho2 = new ArrayList<>();
+        atual = lca;
+        while (atual != null) {
+            caminho2.add(atual.valor);
+            int cmp = v2.compareTo(atual.valor);
+            if (cmp == 0) break;
+            if (cmp < 0) atual = atual.esquerdo;
+            else atual = atual.direito;
+        }
+        if (caminho2.isEmpty() || !caminho2.get(caminho2.size()-1).equals(v2)) return Collections.emptyList();
 
-        // Encontrar ponto de divergência
-        int i = 0;
-        while (i < caminho1.size() && i < caminho2.size() && caminho1.get(i).equals(caminho2.get(i)))
-            i++;
-
-        // Construir caminho entre os dois nós
+        // Construir caminho v1 -> ... -> v2 via LCA:
         List<T> caminho = new ArrayList<>();
-        for (int j = caminho1.size() - 1; j >= i; j--)
-            caminho.add(caminho1.get(j));
-        for (int j = i - 1; j < caminho2.size(); j++)
-            caminho.add(caminho2.get(j));
-
+        // adicionar caminho1 de v1 até LCA (invertendo), exceto LCA para evitar duplicar
+        for (int i = caminho1.size() - 1; i >= 0; i--) {
+            if (i == 0) { // último é LCA
+                caminho.add(caminho1.get(i));
+            } else {
+                caminho.add(caminho1.get(i));
+            }
+        }
+        // adicionar caminho2 da LCA (excluindo LCA já inserido) até v2
+        for (int i = 1; i < caminho2.size(); i++) {
+            caminho.add(caminho2.get(i));
+        }
         return caminho;
     }
 
-    // ===== ANCESTRAL COMUM MAIS PRÓXIMO (LCA) =====
-    // Retorna o ancestral comum mais próximo de dois valores
-    public T ancestralComum(T valor1, T valor2) {
-        No<T> lca = ancestralComumRec(raiz, valor1, valor2);
+    // -------- LCA - ancestral comum mais próximo (para BST de forma eficiente) --------
+    public T ancestralComum(T v1, T v2) {
+        No<T> lca = encontrarLCA(raiz, v1, v2);
         return (lca != null) ? lca.valor : null;
     }
 
-    private No<T> ancestralComumRec(No<T> no, T v1, T v2) {
-        if (no == null) return null;
-
-        if (no.valor.equals(v1) || no.valor.equals(v2))
-            return no;
-
-        No<T> esq = ancestralComumRec(no.esquerdo, v1, v2);
-        No<T> dir = ancestralComumRec(no.direito, v1, v2);
-
-        if (esq != null && dir != null) return no; // Divergência encontrada
-        return (esq != null) ? esq : dir;
+    private No<T> encontrarLCA(No<T> no, T v1, T v2) {
+        if (no == null || v1 == null || v2 == null) return null;
+        No<T> atual = no;
+        while (atual != null) {
+            int cmpV1 = v1.compareTo(atual.valor);
+            int cmpV2 = v2.compareTo(atual.valor);
+            if (cmpV1 < 0 && cmpV2 < 0) {
+                atual = atual.esquerdo;
+            } else if (cmpV1 > 0 && cmpV2 > 0) {
+                atual = atual.direito;
+            } else {
+                // eles estão em lados diferentes ou um é igual ao atual => atual é LCA
+                return atual;
+            }
+        }
+        return null;
     }
 }

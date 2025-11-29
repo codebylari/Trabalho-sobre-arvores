@@ -1,50 +1,37 @@
-package src.model; // Declara que esta classe pertence ao pacote src.model
+package src.model;
 
-// Classe Pessoa que implementa Comparable, permitindo comparar objetos Pessoa pelo nome
+/**
+ * Representa uma pessoa. A ordenação (compareTo) é feita pelo nome, ignorando maiúsculas/minúsculas.
+ */
 public class Pessoa implements Comparable<Pessoa> {
-    private String nome; // Atributo que armazena o nome da pessoa
-    private int idade;   // Atributo que armazena a idade da pessoa
-    private String cpf;  // Atributo que armazena o CPF da pessoa
+    private String nome;
+    private int idade;
+    private String cpf;
 
-    // Construtor da classe, inicializa os atributos da pessoa
     public Pessoa(String nome, int idade, String cpf) {
-        this.nome = nome;
+        this.nome = (nome != null) ? nome.trim() : "";
         this.idade = idade;
-        this.cpf = cpf;
+        this.cpf = (cpf != null) ? cpf.trim() : "";
     }
 
-    // Getter para o nome
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public int getIdade() { return idade; }
+    public String getCpf() { return cpf; }
 
-    // Getter para a idade
-    public int getIdade() {
-        return idade;
-    }
-
-    // Getter para o CPF
-    public String getCpf() {
-        return cpf;
-    }
-
-    // Método compareTo da interface Comparable
-    // Permite comparar duas pessoas pelo nome, ignorando maiúsculas/minúsculas
     @Override
     public int compareTo(Pessoa outra) {
+        if (outra == null) return 1;
         return this.nome.compareToIgnoreCase(outra.nome);
     }
 
-    // Método equals sobrescrito para comparar pessoas pelo nome
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) return true; // Se for o mesmo objeto, retorna true
-        if (obj == null || getClass() != obj.getClass()) return false; // Se for null ou de outra classe, retorna false
-        Pessoa pessoa = (Pessoa) obj; // Faz o cast para Pessoa
-        return nome.equalsIgnoreCase(pessoa.nome); // Compara nomes ignorando maiúsculas/minúsculas
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Pessoa p = (Pessoa) obj;
+        return this.nome.equalsIgnoreCase(p.nome);
     }
 
-    // Método toString sobrescrito para exibir a pessoa de forma legível
     @Override
     public String toString() {
         return nome + " (" + idade + " anos, CPF: " + cpf + ")";
