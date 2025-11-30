@@ -1,53 +1,84 @@
 🌳 Árvore Binária de Pessoas em Java
-Descrição
+📌 Descrição
 
-Este projeto implementa uma árvore binária genérica em Java para armazenar informações de pessoas, permitindo organizar e manipular dados de forma hierárquica. A aplicação possui uma interface gráfica feita com Swing, permitindo ao usuário interagir de forma intuitiva com a estrutura de dados.
+Este projeto implementa uma árvore binária de busca (BST) em Java para armazenar informações de pessoas, oferecendo uma forma estruturada e hierárquica de manipular dados.
+A aplicação conta com uma interface gráfica desenvolvida em Swing, permitindo interação intuitiva com a estrutura de dados e suas operações.
 
-O objetivo é explorar conceitos de árvores binárias de busca (BST), percursos (pré-ordem, in-ordem, pós-ordem), caminhos entre nós, profundidade, altura e ancestral comum mais próximo.
+O objetivo é estudar e aplicar conceitos de estruturas de dados como:
 
-Funcionalidades
+Árvores binárias de busca
 
-Cadastro de Pessoas com Nome, Idade e CPF.
+Percursos (pré-ordem, em ordem, pós-ordem)
 
-Remoção de Pessoas diretamente da tabela de registros.
+Altura e profundidade
 
-Busca por nome na árvore.
-
-Percursos:
-
-Pré-Ordem
-
-Em Ordem
-
-Pós-Ordem
-
-Métricas da Árvore:
-
-Altura da árvore
-
-Profundidade de um nó específico
-
-Caminhos:
-
-Trajeto da raiz até um nó
-
-Caminho entre dois nós
+Caminho entre nós
 
 Ancestral comum mais próximo (LCA)
 
-Histórico dos 2 últimos comandos
+✨ Funcionalidades
+👤 Gestão de Pessoas
 
-Tabela de cadastros interativa com seleção para remoção.
+✔ Cadastro de pessoas com Nome, Idade e CPF
+✔ Remoção direta a partir da tabela
+✔ Busca por nome na árvore
 
+🔍 Percursos da Árvore
 
-A interface gráfica será aberta. Use os botões para cadastrar, remover, buscar e explorar a árvore.
+Pré-Ordem (PreOrder)
 
-Observações
+Em Ordem (InOrder)
 
-Todos os cadastros são baseados no nome da pessoa como critério de comparação na árvore.
+Pós-Ordem (PostOrder)
 
-A interface utiliza Swing e telas modais para operações de cadastro, percursos, métricas e caminhos.
+📊 Métricas da Árvore
 
-A tabela de cadastros permite selecionar uma pessoa e habilitar o botão de remoção.
+Altura da árvore
 
-Ao inserir uma nova pessoa pelo modal, a janela fecha automaticamente.
+Profundidade de um nó
+
+Exibição do trajeto da raiz até um nó
+
+🔗 Caminhos
+
+Caminho entre dois nós
+
+Ancestral Comum Mais Próximo (LCA)
+
+🕑 Histórico
+
+Registro automático dos 2 últimos comandos executados
+
+🧾 Interface Gráfica (Swing)
+
+Tela principal com tabela interativa
+
+Seleção de pessoas habilita o botão de remoção
+
+Modais para cadastro, busca, percursos, métricas e caminhos
+
+Ao cadastrar uma nova pessoa, o modal fecha automaticamente
+
+▶️ Como usar
+
+Execute o projeto em um ambiente Java com suporte a Swing.
+
+A interface gráfica abrirá automaticamente.
+
+Utilize os botões para:
+
+Cadastrar novas pessoas
+
+Remover registros selecionados na tabela
+
+Buscar um nome específico
+
+Explorar a árvore através de percursos, métricas e caminhos
+
+📝 Observações
+
+A comparação entre pessoas na árvore é feita pelo nome.
+
+Toda a interação é feita por meio da interface Swing.
+
+A estrutura da árvore reflete diretamente os cadastros feitos pelo usuário.
