@@ -61,13 +61,17 @@ public class ArvoreBinaria<T extends Comparable<T>> {
         return atual;
     }
 
+    // Encontra o menor valor na subárvore
     private T encontrarMenorValor(No<T> no) {
         No<T> atual = no;
         while (atual.esquerdo != null) atual = atual.esquerdo;
         return atual.valor;
     }
 
+
     // -------- Percursos --------
+
+    // -------- Pré-Ordem --------
     public List<T> preOrdem() {
         List<T> res = new ArrayList<>();
         preOrdemRec(raiz, res);
@@ -82,6 +86,7 @@ public class ArvoreBinaria<T extends Comparable<T>> {
         }
     }
 
+    // -------- Em Ordem --------
     public List<T> emOrdem() {
         List<T> res = new ArrayList<>();
         emOrdemRec(raiz, res);
@@ -95,7 +100,8 @@ public class ArvoreBinaria<T extends Comparable<T>> {
             emOrdemRec(no.direito, res);
         }
     }
-
+    
+    // -------- Pós-Ordem --------
     public List<T> posOrdem() {
         List<T> res = new ArrayList<>();
         posOrdemRec(raiz, res);

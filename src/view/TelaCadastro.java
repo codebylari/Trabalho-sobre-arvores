@@ -1,5 +1,4 @@
 package src.view;
-
 import src.model.*;
 import javax.swing.*;
 import java.awt.*;
