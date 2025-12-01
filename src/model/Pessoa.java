@@ -1,15 +1,30 @@
 package src.model;
 
+import java.util.HashSet;
+
 public class Pessoa implements Comparable<Pessoa> {
+
+    private static HashSet<String> cpfsRegistrados = new HashSet<>();
 
     private String nome;
     private int idade;
     private String cpf;
 
     public Pessoa(String nome, int idade, String cpf) {
+
+        // Remove espaços e garante string válida
+        this.cpf = (cpf != null) ? cpf.trim() : "";
+
+        // ❌ Se o CPF já existir, lança um erro
+        if (cpfsRegistrados.contains(this.cpf)) {
+            throw new IllegalArgumentException("Erro: CPF já cadastrado: " + this.cpf);
+        }
+
+        // Registra o CPF como novo
+        cpfsRegistrados.add(this.cpf);
+
         this.nome = (nome != null) ? nome.trim() : "";
         this.idade = idade;
-        this.cpf = (cpf != null) ? cpf.trim() : "";
     }
 
     public String getNome() { return nome; }
@@ -18,10 +33,10 @@ public class Pessoa implements Comparable<Pessoa> {
 
     @Override
     public int compareTo(Pessoa outra) {
-        // Ordena primeiro pelo nome
+        // Ordena pelo nome
         int comp = this.nome.compareToIgnoreCase(outra.nome);
 
-        // Se os nomes forem iguais, diferencia pelo CPF
+        // Se os nomes forem iguais, usa CPF como desempate
         if (comp == 0) {
             return this.cpf.compareToIgnoreCase(outra.cpf);
         }
@@ -31,7 +46,7 @@ public class Pessoa implements Comparable<Pessoa> {
 
     @Override
     public boolean equals(Object obj) {
-        // Duas pessoas são iguais APENAS se tiverem o mesmo CPF
+        // Duas pessoas são iguais apenas se o CPF for igual
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
 
