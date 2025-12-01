@@ -68,7 +68,6 @@ public class ArvoreBinaria<T extends Comparable<T>> {
         return atual.valor;
     }
 
-
     // -------- Percursos --------
 
     // -------- Pré-Ordem --------

@@ -1,9 +1,7 @@
 package src.model;
 
-/**
- * Representa uma pessoa. A ordenação (compareTo) é feita pelo nome, ignorando maiúsculas/minúsculas.
- */
 public class Pessoa implements Comparable<Pessoa> {
+
     private String nome;
     private int idade;
     private String cpf;
@@ -20,16 +18,25 @@ public class Pessoa implements Comparable<Pessoa> {
 
     @Override
     public int compareTo(Pessoa outra) {
-        if (outra == null) return 1;
-        return this.nome.compareToIgnoreCase(outra.nome);
+        // Ordena primeiro pelo nome
+        int comp = this.nome.compareToIgnoreCase(outra.nome);
+
+        // Se os nomes forem iguais, diferencia pelo CPF
+        if (comp == 0) {
+            return this.cpf.compareToIgnoreCase(outra.cpf);
+        }
+
+        return comp;
     }
 
     @Override
     public boolean equals(Object obj) {
+        // Duas pessoas são iguais APENAS se tiverem o mesmo CPF
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
+
         Pessoa p = (Pessoa) obj;
-        return this.nome.equalsIgnoreCase(p.nome);
+        return this.cpf.equalsIgnoreCase(p.cpf);
     }
 
     @Override
