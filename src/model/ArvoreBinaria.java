@@ -143,6 +143,7 @@ public class ArvoreBinaria<T extends Comparable<T>> {
     }
 
     // -------- Caminho da raiz até um nó --------
+
     public List<T> caminhoAte(T valor) {
         List<T> caminho = new ArrayList<>();
         if (valor == null) return Collections.emptyList();
@@ -158,6 +159,7 @@ public class ArvoreBinaria<T extends Comparable<T>> {
     }
 
     // -------- Caminho entre dois nós --------
+
     public List<T> caminhoEntre(T v1, T v2) {
         if (v1 == null || v2 == null) return Collections.emptyList();
         // Encontre LCA e então caminho
@@ -206,6 +208,7 @@ public class ArvoreBinaria<T extends Comparable<T>> {
     }
 
     // -------- LCA - ancestral comum mais próximo (para BST de forma eficiente) --------
+    
     public T ancestralComum(T v1, T v2) {
         No<T> lca = encontrarLCA(raiz, v1, v2);
         return (lca != null) ? lca.valor : null;
