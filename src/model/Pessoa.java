@@ -12,16 +12,18 @@ public class Pessoa implements Comparable<Pessoa> {
 
     public Pessoa(String nome, int idade, String cpf) {
 
-        // Remove espaços e garante string válida
         this.cpf = (cpf != null) ? cpf.trim() : "";
 
-        // ❌ Se o CPF já existir, lança um erro
-        if (cpfsRegistrados.contains(this.cpf)) {
-            throw new IllegalArgumentException("Erro: CPF já cadastrado: " + this.cpf);
-        }
+        // 🔥 Correção importante:
+        // Não registrar nem validar CPF vazio ("")
+        if (!this.cpf.isEmpty()) {
 
-        // Registra o CPF como novo
-        cpfsRegistrados.add(this.cpf);
+            if (cpfsRegistrados.contains(this.cpf)) {
+                throw new IllegalArgumentException("Erro: CPF já cadastrado: " + this.cpf);
+            }
+
+            cpfsRegistrados.add(this.cpf);
+        }
 
         this.nome = (nome != null) ? nome.trim() : "";
         this.idade = idade;
@@ -33,23 +35,17 @@ public class Pessoa implements Comparable<Pessoa> {
 
     @Override
     public int compareTo(Pessoa outra) {
-        // Ordena pelo nome
         int comp = this.nome.compareToIgnoreCase(outra.nome);
-
-        // Se os nomes forem iguais, usa CPF como desempate
         if (comp == 0) {
             return this.cpf.compareToIgnoreCase(outra.cpf);
         }
-
         return comp;
     }
 
     @Override
     public boolean equals(Object obj) {
-        // Duas pessoas são iguais apenas se o CPF for igual
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-
         Pessoa p = (Pessoa) obj;
         return this.cpf.equalsIgnoreCase(p.cpf);
     }
